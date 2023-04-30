@@ -14,7 +14,23 @@
 .container {
   margin: 0;
   position: relative;
-  height: 80vh;
+  height: 100vh;
   /* width: 600px; */
   overflow: hidden;
+}
+button {
+  position: absolute;
+  bottom: 20vh;
+  text-transform: capitalize;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 24px;
+  border: 1px solid white;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.1);
+  color: white;
+  font: 0.8125rem sans-serif;
+  outline: none;
+  z-index: 99999;
+  cursor: pointer;
 }

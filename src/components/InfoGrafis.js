@@ -2,9 +2,9 @@ import React, { Suspense, useState } from "react";
 import {
   Interactive,
   XR,
-  ARButton,
   Controllers,
   XRButton,
+  ARButton,
 } from "@react-three/xr";
 import { Text, OrbitControls, Environment } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
@@ -72,19 +72,22 @@ const InfoGrafis = () => {
           onSessionStart={() => setInAr(true)}
           onSessionEnd={() => setInAr(false)}
         >
-          <ambientLight />
-          <pointLight position={[10, 10, 10]} />
-          <Button position={[0, 0.1, -0.8]} />
-          <Controllers />
-          <OrbitControls />
+          {inAr && (
+            <>
+              <ambientLight />
+              <pointLight position={[10, 10, 10]} />
+              <Button position={[0, 0.1, -0.8]} />
+            </>
+          )}
+
           {!inAr && (
-            <Environment
-              files="https://cdn.jsdelivr.net/gh/Sean-Bradley/React-Three-Fiber-Boilerplate@useGLTF/public/img/workshop_1k.hdr"
-              background
-            />
+            <>
+              <Environment files="/ok2.hdr" background />
+              <Controllers />
+              <OrbitControls />
+            </>
           )}
         </XR>
-        {/* <axesHelper /> */}
       </Canvas>
     </>
   );

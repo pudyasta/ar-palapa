@@ -1,54 +1,63 @@
-import React, { useEffect, useRef } from "react";
-import { useAr, useDispatch } from "./ArProvider";
+import React from "react";
+import { ARAnchor, ARView } from "react-three-mind";
+import { useDispatch } from "./ArProvider";
+import { ResizeObserver } from "@juggle/resize-observer";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import { useLoader } from "@react-three/fiber";
+// function Plane(props) {
+//   return (
+//     <a-gltf-model
+//       rotation="0 0 0 "
+//       position="0 -0.25 0"
+//       scale="0.05 0.05 0.05"
+//       src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.1/examples/image-tracking/assets/band-example/raccoon/scene.gltf"
+//       animation-mixer
+//     />
+//   );
+// }
 
 const Scanner = (props) => {
-  const sceneRef = useRef(null);
-  const targetRef = useRef();
   const dispatch = useDispatch();
-  const ar = useAr();
-
-  useEffect(() => {
-    if (ar.isScanning) {
-      const sceneEl = sceneRef.current;
-      const arSystem = sceneEl?.systems["mindar-image-system"];
-
-      sceneEl.addEventListener("renderstart", () => {
-        arSystem.start();
-        targetRef.current.addEventListener("targetFound", (event) => {
-          dispatch("scanned");
-        });
-      });
-      return () => {
-        arSystem.stop();
-      };
-    }
-  }, []);
+  const gltf = useLoader(
+    GLTFLoader,
+    "https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.1/examples/image-tracking/assets/band-example/raccoon/scene.gltf"
+  );
   return (
-    <a-scene
-      ref={sceneRef}
-      mindar-image="imageTargetSrc: https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.0/examples/image-tracking/assets/card-example/card.mind; autoStart: false;"
-      color-space="sRGB"
-      embedded
-      renderer="colorManagement: true, physicallyCorrectLights"
-      vr-mode-ui="enabled: false"
-      device-orientation-permission-ui="enabled: false"
+    <ARView
+      imageTargets="/targets.mind"
+      filterMinCF={0.1}
+      maxTrack={5}
+      filterBeta={10000}
+      resize={{ polyfill: ResizeObserver }}
     >
-      <a-assets>
-        <img
-          id="card"
-          src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.0/examples/image-tracking/assets/card-example/card.png"
-          alt="card"
+      <ambientLight />
+      <ARAnchor target={0} onAnchorFound={() => console.log("ok")}>
+        <primitive
+          object={gltf.scene}
+          scale={[0.2, 0.2, 0.2]}
+          position={[0, 0, 1]}
+          children-0-castShadow
         />
-        <a-asset-item
-          id="avatarModel"
-          src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.0/examples/image-tracking/assets/card-example/softmind/scene.gltf"
-        ></a-asset-item>
-      </a-assets>
-
-      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
-
-      <a-entity mindar-image-target="targetIndex: 0" ref={targetRef}></a-entity>
-    </a-scene>
+        {/* <Plane /> */}
+      </ARAnchor>
+      <ARAnchor target={1} onAnchorFound={() => console.log("ok")}>
+        <primitive
+          object={gltf.scene}
+          position={[0, 0, 1]}
+          scale={[0.2, 0.2, 0.2]}
+          children-0-castShadow
+        />
+      </ARAnchor>
+      <ARAnchor target={2} onAnchorFound={() => console.log("ok")}>
+        <primitive
+          object={gltf.scene}
+          position={[0, 0, 0.5]}
+          scale={[0.1, 0.1, 0.1]}
+          children-0-castShadow
+        />
+        {/* <Plane /> */}
+      </ARAnchor>
+    </ARView>
   );
 };
 
