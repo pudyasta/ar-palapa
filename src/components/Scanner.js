@@ -1,63 +1,56 @@
-import React from "react";
-import { ARAnchor, ARView } from "react-three-mind";
-import { useDispatch } from "./ArProvider";
-import { ResizeObserver } from "@juggle/resize-observer";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-import { useLoader } from "@react-three/fiber";
-// function Plane(props) {
-//   return (
-//     <a-gltf-model
-//       rotation="0 0 0 "
-//       position="0 -0.25 0"
-//       scale="0.05 0.05 0.05"
-//       src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.1/examples/image-tracking/assets/band-example/raccoon/scene.gltf"
-//       animation-mixer
-//     />
-//   );
-// }
+import React, { useEffect, useRef } from "react";
+import "https://cdn.jsdelivr.net/npm/mind-ar@1.2.0/dist/mindar-image-aframe.prod.js";
+import { useNavigate } from "react-router-dom";
 
 const Scanner = (props) => {
-  const dispatch = useDispatch();
-  const gltf = useLoader(
-    GLTFLoader,
-    "https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.1/examples/image-tracking/assets/band-example/raccoon/scene.gltf"
-  );
+  const sceneRef = useRef(null);
+  const targetRef = useRef();
+  const navigateTo = useNavigate();
+
+  useEffect(() => {
+    const sceneEl = sceneRef.current;
+    const arSystem = sceneEl.systems["mindar-image-system"];
+    console.log(arSystem);
+    sceneEl.addEventListener("renderstart", () => {
+      arSystem.start();
+    });
+    targetRef.current.addEventListener("targetFound", (e) => {
+      console.log(e);
+      arSystem.stop();
+      navigateTo("/blogs");
+      window.location.reload();
+    });
+  });
+
   return (
-    <ARView
-      imageTargets="/targets.mind"
-      filterMinCF={0.1}
-      maxTrack={5}
-      filterBeta={10000}
-      resize={{ polyfill: ResizeObserver }}
+    <a-scene
+      ref={sceneRef}
+      mindar-image="imageTargetSrc: /targets.mind; autoStart: true;  uiError: no;"
+      color-space="sRGB"
+      embedded
+      renderer="colorManagement: true, physicallyCorrectLights"
+      vr-mode-ui="enabled: false"
+      device-orientation-permission-ui="enabled: false"
     >
-      <ambientLight />
-      <ARAnchor target={0} onAnchorFound={() => console.log("ok")}>
-        <primitive
-          object={gltf.scene}
-          scale={[0.2, 0.2, 0.2]}
-          position={[0, 0, 1]}
-          children-0-castShadow
+      <a-assets>
+        <a-asset-item
+          id="raccoonModel"
+          src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.1/examples/image-tracking/assets/band-example/raccoon/scene.gltf"
+        ></a-asset-item>
+      </a-assets>
+
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+      <a-entity mindar-image-target="targetIndex: 2" ref={targetRef}></a-entity>
+      <a-entity mindar-image-target="targetIndex: 0">
+        <a-gltf-model
+          rotation="0 0 0 "
+          position="0 -0.25 0"
+          scale="0.05 0.05 0.05"
+          src="#raccoonModel"
         />
-        {/* <Plane /> */}
-      </ARAnchor>
-      <ARAnchor target={1} onAnchorFound={() => console.log("ok")}>
-        <primitive
-          object={gltf.scene}
-          position={[0, 0, 1]}
-          scale={[0.2, 0.2, 0.2]}
-          children-0-castShadow
-        />
-      </ARAnchor>
-      <ARAnchor target={2} onAnchorFound={() => console.log("ok")}>
-        <primitive
-          object={gltf.scene}
-          position={[0, 0, 0.5]}
-          scale={[0.1, 0.1, 0.1]}
-          children-0-castShadow
-        />
-        {/* <Plane /> */}
-      </ARAnchor>
-    </ARView>
+      </a-entity>
+    </a-scene>
   );
 };
 

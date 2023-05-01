@@ -1,12 +1,10 @@
 import "./App.css";
-import React, { useEffect } from "react";
-import EntryAr from "./components/EntryAr";
-import { useAr, useDispatch } from "./components/ArProvider";
+import React, { useEffect, useState } from "react";
 import Scanner from "./components/Scanner";
-
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import EntryAr from "./components/EntryAr";
 const App = () => {
-  const ar = useAr();
-  const dispatch = useDispatch();
+  const [device, setDevice] = useState("mobile");
   useEffect(() => {
     const detectDeviceType = () =>
       /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
@@ -14,16 +12,27 @@ const App = () => {
       )
         ? "Mobile"
         : "Desktop";
-    if (detectDeviceType() == "Desktop") {
-      dispatch("scanned");
+    if (detectDeviceType() === "Desktop") {
+      setDevice("desktop");
     }
   }, []);
 
   return (
     <>
-      <div className="container">
-        {ar.isScanning ? <Scanner /> : <EntryAr />}
-      </div>
+      <BrowserRouter>
+        <div className="container">
+          <Routes>
+            <Route path="/">
+              <Route
+                index
+                element={device === "mobile" ? <Scanner /> : <EntryAr />}
+              />
+              <Route path="blogs" element={<EntryAr />} />
+            </Route>
+          </Routes>
+          {/* {ar.isScanning ? : <EntryAr />} */}
+        </div>
+      </BrowserRouter>
     </>
   );
 };

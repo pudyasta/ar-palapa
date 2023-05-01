@@ -1,14 +1,9 @@
 import React, { Suspense, useState } from "react";
-import {
-  Interactive,
-  XR,
-  Controllers,
-  XRButton,
-  ARButton,
-} from "@react-three/xr";
-import { Text, OrbitControls, Environment } from "@react-three/drei";
+import { Interactive, XR, XRButton } from "@react-three/xr";
+import { Text } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { ResizeObserver } from "@juggle/resize-observer";
+import { useNavigate } from "react-router-dom";
 
 const Box = ({ color, size, scale, children, ...rest }) => {
   return (
@@ -58,9 +53,10 @@ const Button = (props) => {
 
 const InfoGrafis = () => {
   const [inAr, setInAr] = useState(false);
+  const navigateTo = useNavigate();
 
   return (
-    <>
+    <div className="background">
       <XRButton
         mode="ar"
         position={[0, 0, 0]}
@@ -69,8 +65,11 @@ const InfoGrafis = () => {
       <Canvas resize={{ polyfill: ResizeObserver }}>
         <XR
           referenceSpace="local"
-          onSessionStart={() => setInAr(true)}
-          onSessionEnd={() => setInAr(false)}
+          onSessionStart={(e) => setInAr(true)}
+          onSessionEnd={() => {
+            setInAr(false);
+            navigateTo("/");
+          }}
         >
           {inAr && (
             <>
@@ -79,18 +78,9 @@ const InfoGrafis = () => {
               <Button position={[0, 0.1, -0.8]} />
             </>
           )}
-
-          {!inAr && (
-            <>
-              <Environment files="/ok2.hdr" background />
-              <Controllers />
-              <OrbitControls />
-            </>
-          )}
         </XR>
       </Canvas>
-    </>
+    </div>
   );
 };
-
 export default InfoGrafis;

@@ -15,7 +15,6 @@
   margin: 0;
   position: relative;
   height: 100vh;
-  /* width: 600px; */
   overflow: hidden;
 }
 button {
@@ -33,4 +32,11 @@ button {
   outline: none;
   z-index: 99999;
   cursor: pointer;
+}
+.background {
+  width: 100%;
+  position: absolute;
+  height: 100vh;
+  background-size: contain;
+  background-image: url("https://scontent.fjog3-1.fna.fbcdn.net/v/t39.30808-6/331113137_528518286017234_9000023443179809345_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=MeDb_qhAuEAAX9EW1_8&_nc_ht=scontent.fjog3-1.fna&oh=00_AfDtPq5GeMnKCTfTQ4AZGy8inCvdwoOp-MSbzyn3U56MlQ&oe=64549B43");
 }
