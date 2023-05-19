@@ -17,7 +17,7 @@
   height: 100vh;
   overflow: hidden;
 }
-button {
+/* button {
   position: absolute;
   bottom: 20vh;
   text-transform: capitalize;
@@ -32,7 +32,7 @@ button {
   outline: none;
   z-index: 99999;
   cursor: pointer;
-}
+} */
 .background {
   width: 100%;
   position: absolute;

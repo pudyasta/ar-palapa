@@ -1,7 +1,11 @@
 import React, { useEffect, useRef } from "react";
-import "https://cdn.jsdelivr.net/npm/mind-ar@1.2.0/dist/mindar-image-aframe.prod.js";
 import { useNavigate } from "react-router-dom";
-
+// import ModelThree from "./ModelThree";
+// import { useLoader } from "@react-three/fiber";
+// import { MindARThree } from "mind-ar/dist/mindar-image-three.prod.js";
+// import * as THREE from "three";
+// import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import "mind-ar/dist/mindar-image-aframe.prod.js";
 const Scanner = (props) => {
   const sceneRef = useRef(null);
   const targetRef = useRef();
@@ -10,18 +14,58 @@ const Scanner = (props) => {
   useEffect(() => {
     const sceneEl = sceneRef.current;
     const arSystem = sceneEl.systems["mindar-image-system"];
-    console.log(arSystem);
     sceneEl.addEventListener("renderstart", () => {
       arSystem.start();
     });
     targetRef.current.addEventListener("targetFound", (e) => {
-      console.log(e);
       arSystem.stop();
       navigateTo("/blogs");
       window.location.reload();
     });
   });
+  // const containerRef = useRef(null);
+  // const gltf = useLoader(
+  //   GLTFLoader,
+  //   "https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.1/examples/image-tracking/assets/band-example/raccoon/scene.gltf"
+  // );
 
+  // useEffect(() => {
+  //   const mindarThree = new MindARThree({
+  //     container: containerRef.current,
+  //     imageTargetSrc: "/targets.mind",
+  //   });
+  //   const { renderer, scene, camera } = mindarThree;
+  //   const light = new THREE.AmbientLight(0x404040); // soft white light
+  //   scene.add(light);
+  //   const anchor = mindarThree.addAnchor(0);
+  //   const geometry = new THREE.PlaneGeometry(1, 0.55);
+  //   const material = new THREE.MeshBasicMaterial({
+  //     color: 0x00ffff,
+  //     transparent: true,
+  //     opacity: 0.5,
+  //   });
+  //   gltf.scene.scale.set(0.1, 0.1, 0.1);
+  //   const root = gltf.scene;
+  //   const mixer = new THREE.AnimationMixer(gltf);
+  //   // console.log(gltf.animations[0]);
+  //   mixer.clipAction(gltf.animations[0]).play();
+  //   const plane = new THREE.Mesh(geometry, material);
+  //   anchor.group.add(root);
+
+  //   mindarThree.start();
+  //   renderer.setAnimationLoop(() => {
+  //     renderer.render(scene, camera);
+  //   });
+
+  //   return () => {
+  //     renderer.setAnimationLoop(null);
+  //     // mindarThree.stop();
+  //   };
+  // }, []);
+
+  // return (
+  //   <div style={{ width: "100%", height: "100vh" }} ref={containerRef}></div>
+  // );
   return (
     <a-scene
       ref={sceneRef}
@@ -48,6 +92,7 @@ const Scanner = (props) => {
           position="0 -0.25 0"
           scale="0.05 0.05 0.05"
           src="#raccoonModel"
+          animation-mixer
         />
       </a-entity>
     </a-scene>

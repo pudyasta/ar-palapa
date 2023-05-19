@@ -1,10 +1,10 @@
 import React, { Suspense, useState } from "react";
 import { Interactive, XR, XRButton } from "@react-three/xr";
-import { Text } from "@react-three/drei";
+import { Environment, OrbitControls, Text } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { ResizeObserver } from "@juggle/resize-observer";
 import { useNavigate } from "react-router-dom";
-
+import ModelThree from "./ModelThree";
 const Box = ({ color, size, scale, children, ...rest }) => {
   return (
     <mesh scale={scale} {...rest}>
@@ -56,7 +56,7 @@ const InfoGrafis = () => {
   const navigateTo = useNavigate();
 
   return (
-    <div className="background">
+    <div style={{ height: "100vh" }}>
       <XRButton
         mode="ar"
         position={[0, 0, 0]}
@@ -71,11 +71,17 @@ const InfoGrafis = () => {
             navigateTo("/");
           }}
         >
-          {inAr && (
+          {inAr ? (
             <>
               <ambientLight />
               <pointLight position={[10, 10, 10]} />
               <Button position={[0, 0.1, -0.8]} />
+              <ModelThree position={[5, -1, -1]} scale={[0.5, 0.5, 0.5]} />
+            </>
+          ) : (
+            <>
+              <OrbitControls />
+              {/* <Environment files="/ok2.hdr" background /> */}
             </>
           )}
         </XR>
