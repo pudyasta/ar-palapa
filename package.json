@@ -10,14 +10,11 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
-<<<<<<< HEAD
-    "aframe-extras.animation-mixer": "^6.1.1",
-    "mind-ar": "^1.2.1",
-=======
     "@yudiel/react-qr-scanner": "^1.1.8",
+    "aframe-extras.animation-mixer": "^6.1.1",
     "aframe-react": "^4.4.0",
     "axios": "^1.4.0",
->>>>>>> dfc941ab8b6184b0fcd6058e25daf87a8dcce0f6
+    "mind-ar": "^1.2.1",
     "promise.allsettled": "es-shims/Promise.allSettled",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

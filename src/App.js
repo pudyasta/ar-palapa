@@ -28,11 +28,7 @@ const App = () => {
             <Route path="/">
               <Route
                 index
-<<<<<<< HEAD
-                element={device === "mobile" ? <Scanner /> : <AframeInfo />}
-=======
                 element={device === "mobile" ? <QRScanner /> : <EntryAr />}
->>>>>>> dfc941ab8b6184b0fcd6058e25daf87a8dcce0f6
               />
               <Route path="blogs" element={<EntryAr />} />
             </Route>

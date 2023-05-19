@@ -76,7 +76,7 @@ const InfoGrafis = () => {
               <ambientLight />
               <pointLight position={[10, 10, 10]} />
               <Button position={[0, 0.1, -0.8]} />
-              <ModelThree position={[5, -1, -1]} scale={[0.5, 0.5, 0.5]} />
+              <ModelThree position={[5, 0, -5]} scale={[0.008, 0.008, 0.008]} />
             </>
           ) : (
             <>
