@@ -1,6 +1,8 @@
 import "./App.css";
 import React, { useEffect, useState } from "react";
 import Scanner from "./components/Scanner";
+
+import QRScanner from "./components/QRScanner";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import EntryAr from "./components/EntryAr";
 import AframeInfo from "./components/AframeInfo";
@@ -26,7 +28,11 @@ const App = () => {
             <Route path="/">
               <Route
                 index
+<<<<<<< HEAD
                 element={device === "mobile" ? <Scanner /> : <AframeInfo />}
+=======
+                element={device === "mobile" ? <QRScanner /> : <EntryAr />}
+>>>>>>> dfc941ab8b6184b0fcd6058e25daf87a8dcce0f6
               />
               <Route path="blogs" element={<EntryAr />} />
             </Route>
